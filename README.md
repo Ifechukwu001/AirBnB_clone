@@ -1,6 +1,6 @@
-#AirBnB clone - The console.
+# AirBnB clone - The console.
 
-##Project Description
+## Project Description
 
 Team project to build a clone of AirBnB.
 
@@ -10,30 +10,30 @@ To see the fundamental background of the project visit the Wiki.
 
 The console willl perform the following tasks:
 
-*create a new object.
+* create a new object.
 
-*retrive an object from a file.
+* retrive an object from a file.
 
-*do operations on objects.
+* do operations on objects.
 
-*destroy an object.
+* destroy an object.
 
-##storage
+## storage
 
 All the classes are handled by the Storage engine in the FileStorage Class.
 
-##Installation
+## Installation
 
 To get usage of the console use the following command
 ```
 git clone https://github.com/Ifechukwu001/AirBnB_clone.git
 ```
 
-#Usage
+# Usage
 
 The Console shows a prompt and wait for the BaseModel to type a command, interpretes and run the input command and display the prompt again. You can exit the console using quit command EOF or Ctrl + D.
 
-##Interactive mode
+## Interactive mode
 ```
 $ ./console.py
 (hbnb) help
@@ -48,7 +48,7 @@ EOF  help  quit
 $
 ```
 
-#Non-Interactive mode
+# Non-Interactive mode
 ```
 $ echo "help" | ./console.py
 (hbnb)
