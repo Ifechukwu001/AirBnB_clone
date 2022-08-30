@@ -1,4 +1,4 @@
-#AirBnB clone - The console
+#AirBnB clone - The console.
 
 ##Project Description
 
