@@ -4,6 +4,7 @@
 import json
 from ..base_model import BaseModel
 
+
 class FileStorage:
     """ FileStorage class.
 
@@ -49,7 +50,7 @@ class FileStorage:
             file_path = FileStorage.__file_path
             with open(file_path, encoding="utf-8") as obj_file:
                 json_dict = json.load(obj_file)
-        except:
+        except Exception:
             pass
         else:
             FileStorage.__objects = {}
