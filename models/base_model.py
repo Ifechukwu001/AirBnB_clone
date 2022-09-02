@@ -3,7 +3,7 @@
 """
 from uuid import uuid4
 from datetime import datetime
-from models import storage
+import models
 
 
 class BaseModel():
@@ -29,11 +29,12 @@ class BaseModel():
                 if key == "created_at" or key == "updated_at":
                     value = datetime.fromisoformat(value)
                 self.__setattr__(key, value)
+
         else:
             self.id = str(uuid4())
             self.created_at = datetime.now()
             self.updated_at = datetime.now()
-            storage.new(self)
+            models.storage.new(self)
 
     def __str__(self):
         """ str method.
@@ -43,7 +44,7 @@ class BaseModel():
 
         """
         class_name = self.__class__.__name__
-        return "[{}] ({}) ({})" .format(class_name, self.id, self.__dict__)
+        return "[{}] ({}) ({})".format(class_name, self.id, self.__dict__)
 
     def save(self):
         """ Save method.
@@ -52,7 +53,7 @@ class BaseModel():
 
         """
         self.updated_at = datetime.now()
-        storage.save()
+        models.storage.save()
 
     def to_dict(self):
         """ Gets a dictionary representation of the object.
@@ -62,7 +63,7 @@ class BaseModel():
 
         """
         class_name = self.__class__.__name__
-        new_dict = self.__dict__
+        new_dict = self.__dict__.copy()
         new_dict.update(__class__=class_name)
         new_dict.update(created_at=self.created_at.isoformat())
         new_dict.update(updated_at=self.updated_at.isoformat())
