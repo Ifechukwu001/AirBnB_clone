@@ -3,6 +3,7 @@
 """
 import json
 from ..base_model import BaseModel
+from ..user import User
 
 
 class FileStorage:
@@ -11,7 +12,7 @@ class FileStorage:
     """
     __file_path = "./file.json"
     __objects = {}
-    __classes = {"BaseModel": BaseModel}
+    __classes = {"BaseModel": BaseModel, "User": User}
 
     def all(self):
         """ Returns the objects stored in the private dictionary.
