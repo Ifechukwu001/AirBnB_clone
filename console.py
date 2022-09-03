@@ -32,13 +32,7 @@ class HBNBCommand(cmd.Cmd):
 
         """
         cmd_args = args.split()
-        if len(cmd_args) == 0:
-            print("** class name missing **")
-        elif cmd_args[0] not in HBNBCommand.__classes:
-            print("** class doesn't exist **")
-        elif len(cmd_args) < 2:
-            print("** instance id missing **")
-        else:
+        if HBNBCommand.valid(cmd_args):
             class_name = cmd_args[0]
             instance_id = cmd_args[1]
             instances = models.storage.all()
@@ -54,13 +48,7 @@ class HBNBCommand(cmd.Cmd):
 
         """
         cmd_args = args.split()
-        if len(cmd_args) == 0:
-            print("** class name missing **")
-        elif cmd_args[0] not in HBNBCommand.__classes:
-            print("** class doesn't exist **")
-        elif len(cmd_args) < 2:
-            print("** instance id missing **")
-        else:
+        if HBNBCommand.valid(cmd_args):
             class_name = cmd_args[0]
             instance_id = cmd_args[1]
             instances = models.storage.all()
@@ -68,7 +56,7 @@ class HBNBCommand(cmd.Cmd):
             if key not in instances:
                 print("** no instance found **")
             else:
-                del(instances[key])
+                del instances[key]
                 models.storage.save()
 
     def do_all(self, args):
@@ -95,6 +83,29 @@ class HBNBCommand(cmd.Cmd):
                         instance_list.append(str(instance))
                 print(instance_list)
 
+    def do_update(self, args):
+        """ Updates an instance based on class name and id
+
+        """
+        cmd_args = args.split()
+        if HBNBCommand.valid(cmd_args):
+            class_name = cmd_args[0]
+            instance_id = cmd_args[1]
+            instances = models.storage.all()
+            key = "{}.{}".format(class_name, instance_id)
+            if key not in instances:
+                print("** no instance found **")
+            elif len(cmd_args) < 3:
+                print("** attribute name missing **")
+            elif len(cmd_args) < 4:
+                print("** value missing **")
+            else:
+                attr_name = cmd_args[2]
+                value = cmd_args[3].strip('\"')
+                instance = instances[key]
+                instance.__dict__[attr_name] = value
+                instance.save()
+
     def do_quit(self, args):
         """ Quit command to exit the program
 
@@ -116,6 +127,23 @@ class HBNBCommand(cmd.Cmd):
 
         """
         pass
+
+    @classmethod
+    def valid(cls, cmd_args):
+        """ Validates a command line
+
+        """
+        if len(cmd_args) == 0:
+            print("** class name missing **")
+            return False
+        elif cmd_args[0] not in cls.__classes:
+            print("** class doesn't exist **")
+            return False
+        elif len(cmd_args) < 2:
+            print("** instance id missing **")
+            return False
+        else:
+            return True
 
 
 if __name__ == "__main__":
