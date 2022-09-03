@@ -16,3 +16,8 @@ class TestBaseModel(unittest.TestCode):
     def test_created_at(self):
         id1 = BaseModel()
         self.assertTrue(id1, "created_at")
+
+    def test_updated_at(self):
+        update = BaseModel()
+        old_time = update.updated_at
+        update.save
