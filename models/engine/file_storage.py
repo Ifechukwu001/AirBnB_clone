@@ -11,6 +11,7 @@ class FileStorage:
     """
     __file_path = "./file.json"
     __objects = {}
+    __classes = {"BaseModel": BaseModel}
 
     def all(self):
         """ Returns the objects stored in the private dictionary.
@@ -55,5 +56,5 @@ class FileStorage:
         else:
             FileStorage.__objects = {}
             for obj_id, obj_dict in json_dict.items():
-                obj = BaseModel(**obj_dict)
+                obj = FileStorage.__classes[obj_dict["__class__"]](**obj_dict)
                 FileStorage.__objects[obj_id] = obj
