@@ -7,7 +7,7 @@ from models.base_model import BaseModel
 from models.user import User
 from models.state import State
 from models.city import City
-from models.Amenity import Amenity
+from models.amenity import Amenity
 from models.place import Place
 from models.review import Review
 
@@ -121,13 +121,18 @@ class HBNBCommand(cmd.Cmd):
         models.storage.save()
         return True
 
+    def do_EOF(self, args):
+        """ Exits the console
+
+        """
+        print()
+        models.storage.save()
+        return True
+
     def precmd(self, line):
         """ Works on command line before execution
 
         """
-        if line == "EOF":
-            print()
-            line = "quit"
         return line
 
     def emptyline(self):
