@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-"""A file that contains the BaseModel class
+""" A file that contains the BaseModel class
 """
 from uuid import uuid4
 from datetime import datetime

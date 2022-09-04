@@ -1,5 +1,6 @@
 #!/usrbin/python3
-"""amenity module"""
+"""Amenity module
+"""
 from models.base_model import BaseModel
 
 
