@@ -103,16 +103,47 @@ class HBNBCommand(cmd.Cmd):
             key = "{}.{}".format(class_name, instance_id)
             if key not in instances:
                 print("** no instance found **")
-            elif len(cmd_args) < 3:
+                return None
+            if len(cmd_args) < 3:
                 print("** attribute name missing **")
-            elif len(cmd_args) < 4:
+                return None
+            if len(cmd_args) < 4 and not cmd_args[2].startswith("{"):
                 print("** value missing **")
+                return None
+            if cmd_args[2].startswith("{"):
+                dict_start = args.index("{")
+                dict_end = args.index("}")
+                att_dict = eval(args[dict_start:dict_end + 1])
+                instance = instances[key]
+                for attr_name, value in att_dict.items():
+                    instance.__dict__[attr_name] = value
+                instance.save()
             else:
                 attr_name = cmd_args[2]
-                value = cmd_args[3].strip('\"')
+                value_start = args.find("\"") + 1
+                if value_start > 0:
+                    value_end = args.find("\"", value_start) + 1
+                    value = args[value_start - 1:value_end]
+                    print(value)
+                else:
+                    value = cmd_args[3]
+                    print(value)
                 instance = instances[key]
-                instance.__dict__[attr_name] = value
+                instance.__dict__[attr_name] = eval(value)
                 instance.save()
+
+    def do_count(self, args):
+        """ Counts the number of instances of a class
+
+        """
+        cmd_args = args.split()
+        class_name = cmd_args[0]
+        instances = models.storage.all()
+        count = 0
+        for instance in instances.values():
+            if instance.__class__.__name__ == class_name:
+                count += 1
+        print(count)
 
     def do_quit(self, args):
         """ Quit command to exit the program
@@ -133,6 +164,20 @@ class HBNBCommand(cmd.Cmd):
         """ Works on command line before execution
 
         """
+        new_line = line.split(".")
+        if len(new_line) == 2:
+            class_name, cmd_function = new_line
+            command, arguments = cmd_function.split("(")
+            arguments = arguments.strip(")").split(",")
+            instance_id = attributes = ""
+            if arguments:
+                instance_id = arguments.pop(0).strip("\"")
+                attributes = ",".join(arguments)
+                if not attributes.startswith(" {"):
+                    attributes = attributes.replace("\"", "", 2)
+                    attributes = attributes.replace(",", "")
+            line = "{} {} {} {}".format(command, class_name,
+                                        instance_id, attributes)
         return line
 
     def emptyline(self):
